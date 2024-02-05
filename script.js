@@ -40,10 +40,10 @@ const questions = [
         input : false
     },
     {
-        question: "What is the capital of France?",
+        question: "Coba tuliskan Prabowo?",
         answers: [],
         input: true,
-        correctAnswer: "Paris"
+        correctAnswer: "Prabowo"
     }
 ]
 

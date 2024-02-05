@@ -6,7 +6,7 @@
 }
 
 body {
-    background: #003995;
+    background: #5295ff;
 }
 
 .app {
@@ -52,7 +52,7 @@ body {
 }
 
 .btn:hover:not([disabled]) {
-    background: #222;
+    background: #5295ff;
     color: #fff;
     
 }

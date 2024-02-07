@@ -9,6 +9,10 @@ body {
     background: #5295ff;
 }
 
+span {
+    color: #5295ff;
+} 
+
 .app {
     background: #fff;
     width: 90%;
@@ -20,9 +24,10 @@ body {
 }
 
 .app h1 {
-    font-size: 30px;
+    text-align: center;
+    font-size: 40px;
     color: #37004d;
-    font-weight: 600;
+    font-weight: 800;
     border-bottom: 1px solid #333;
     padding-bottom: 30px;
 }

@@ -1,64 +1,65 @@
 const questions = [
+        {
+            question : "Which is largest animal in the world",
+            answers: [
+                {text: "Shark", correct: false},
+                {text: "Blue Whale", correct: true},
+                {text: "Elephant", correct: false},
+                {text: "Giraffe", correct: false},
+            ],
+            input : false
+        }, 
+        {
+            question : "Which is smallest country in the world",
+            answers: [
+                {text: "Vatican City", correct: true},
+                {text: "Bhutan", correct: false},
+                {text: "Nepal", correct: false},
+                {text: "Shri Lanksa", correct: false},
+            ],
+            input : false
+        },
+        {
+            question : "Which is the largest desert in the world",
+            answers: [
+                {text: "Kalahari", correct: false},
+                {text: "Gobi", correct: false},
+                {text: "Sahara", correct: false},
+                {text: "Antarctica", correct: true},
+            ],
+            input : false
+        },
+        {
+            question : "Which is the smallest continent in the world",
+            answers: [
+                {text: "Asia", correct: false},
+                {text: "Australia", correct: true},
+                {text: "Artic", correct: false},
+                {text: "Africa", correct: false},
+            ],
+            input : false
+        },
     {
-        question : "Which is largest animal in the world",
+        question: "What is the capital of France?",
         answers: [
-            {text: "Shark", correct: false},
-            {text: "Blue Whale", correct: true},
-            {text: "Elephant", correct: false},
-            {text: "Giraffe", correct: false},
+            { correct: true, correctAnswer: "Paris" }
         ],
-        input : false
-    }, 
-    {
-        question : "Which is smallest country in the world",
-        answers: [
-            {text: "Vatican City", correct: true},
-            {text: "Bhutan", correct: false},
-            {text: "Nepal", correct: false},
-            {text: "Shri Lanksa", correct: false},
-        ],
-        input : false
-    },
-    {
-        question : "Which is the largest desert in the world",
-        answers: [
-            {text: "Kalahari", correct: false},
-            {text: "Gobi", correct: false},
-            {text: "Sahara", correct: false},
-            {text: "Antarctica", correct: true},
-        ],
-        input : false
-    },
-    {
-        question : "Which is the smallest continent in the world",
-        answers: [
-            {text: "Asia", correct: false},
-            {text: "Australia", correct: true},
-            {text: "Artic", correct: false},
-            {text: "Africa", correct: false},
-        ],
-        input : false
-    },
-    {
-        question: "Coba tuliskan Prabowo?",
-        answers: [],
-        input: true,
-        correctAnswer: "Prabowo"
+        input: true
     }
-]
+];
 
-const questionElement = document.getElementById("question")
-const answerButtons = document.getElementById("answer-button")
-const nextButton = document.getElementById("next-btn")
+const questionElement = document.getElementById("question");
+const answerButtons = document.getElementById("answer-button");
+const nextButton = document.getElementById("next-btn");
 
-let currentQuestionIndex = 0
-let score = 0
+let currentQuestionIndex = 0;
+let score = 0;
 
-function startQuiz () {
-    currentQuestionIndex = 0
-    score = 0
-    nextButton.innerHTML = "Next"
-    showQuestion()
+function startQuiz() {
+    currentQuestionIndex = 0;
+    score = 0;
+    nextButton.innerHTML = "Next";
+    showQuestion();
 }
 
 function showQuestion() {
@@ -68,19 +69,14 @@ function showQuestion() {
     questionElement.innerHTML = questionNo + ". " + currentQuestion.question;
 
     if (currentQuestion.input) {
-        if (currentQuestion.input) {
-            const inputField = document.createElement("input");
-            inputField.setAttribute("type", "text");
-            inputField.setAttribute("placeholder", "Type your answer...");
-            inputField.classList.add("btn");
-            answerButtons.appendChild(inputField);
+        const inputField = document.createElement("input");
+        inputField.setAttribute("type", "text");
+        inputField.setAttribute("placeholder", "Type your answer...");
+        inputField.classList.add("btn");
+        answerButtons.appendChild(inputField);
 
-            nextButton.style.display = "block";
-            nextButton.addEventListener("click", handleNextButton);
-            answerButtons.appendChild(nextButton);
-            input = true;
-            score++  
-        }
+        nextButton.style.display = "block";
+        nextButton.addEventListener("click", handleNextButton);
     } else {
         currentQuestion.answers.forEach(answer => {
             const button = document.createElement("button");
@@ -90,6 +86,7 @@ function showQuestion() {
 
             if (answer.correct) {
                 button.dataset.correct = answer.correct;
+                button.dataset.correctAnswer = answer.correctAnswer; // Store the correct answer
             }
             button.addEventListener("click", selectAnswer);
         });
@@ -97,9 +94,9 @@ function showQuestion() {
 }
 
 function resetState() {
-    nextButton.style.display = "none"
-    while (answerButtons.firstChild){
-        answerButtons.removeChild(answerButtons.firstChild)
+    nextButton.style.display = "none";
+    while (answerButtons.firstChild) {
+        answerButtons.removeChild(answerButtons.firstChild);
     }
 }
 
@@ -112,7 +109,7 @@ function selectAnswer(e) {
         if (questions[currentQuestionIndex].input) {
             const inputField = answerButtons.querySelector("input");
             const userAnswer = inputField.value.trim().toLowerCase();
-            const correctAnswer = questions[currentQuestionIndex].correctAnswer.toLowerCase();
+            const correctAnswer = selectedBtn.dataset.correctAnswer.toLowerCase();
 
             if (userAnswer === correctAnswer) {
                 score++;
@@ -127,6 +124,7 @@ function selectAnswer(e) {
     if (questions[currentQuestionIndex].input) {
         const inputField = answerButtons.querySelector("input");
         inputField.disabled = true;
+        nextButton.style.display = "block"; // Show the next button for input questions
     } else {
         Array.from(answerButtons.children).forEach(button => {
             if (button.dataset.correct === "true") {
@@ -134,37 +132,45 @@ function selectAnswer(e) {
             }
             button.disabled = true;
         });
-    }
 
-    nextButton.style.display = "block";
+        nextButton.style.display = "block"; // Show the next button for multiple-choice questions
+    }
 }
 
 function showScore() {
-    resetState()
-    let maxScore = 0
-    maxScore = (score / questions.length) * 100;
+    resetState();
+    let maxScore = (score / questions.length) * 100;
     questionElement.innerHTML = `You Scored ${maxScore}%  ${score} out of ${questions.length}`;
     nextButton.innerHTML = "Play Again";
     nextButton.style.display = "block";
 }
+function handleNextButton() {
+    if (questions[currentQuestionIndex].input) {
+        const inputField = answerButtons.querySelector("input");
+        const userAnswer = inputField.value.trim().toLowerCase();
+        const correctAnswer = questions[currentQuestionIndex].answers[0].correctAnswer.toLowerCase();
 
-function handleNextButton () {
-    currentQuestionIndex++
-    if(currentQuestionIndex < questions.length){
-        showQuestion()
+        if (userAnswer === correctAnswer) {
+            score++;
+        }
+        inputField.disabled = true;
     }
-    else {
-        showScore()
+
+    currentQuestionIndex++;
+
+    if (currentQuestionIndex < questions.length) {
+        showQuestion();
+    } else {
+        showScore();
     }
 }
 
 nextButton.addEventListener("click", () => {
-    if (currentQuestionIndex < questions.length){
-        handleNextButton()
+    if (currentQuestionIndex < questions.length) {
+        handleNextButton();
+    } else {
+        startQuiz();
     }
-    else {
-        startQuiz()
-    }
-})
+});
 
-startQuiz() 
+startQuiz();

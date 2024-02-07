@@ -40,9 +40,9 @@ const questions = [
             input : false
         },
     {
-        question: "What is the capital of France?",
+        question: "What is a snake called in Indonesian?",
         answers: [
-            { correct: true, correctAnswer: "Paris" }
+            { correct: true, correctAnswer: "Ular" }
         ],
         input: true
     }

@@ -70,6 +70,7 @@ function continueStudy() {
     appQuizElement.style.display = 'block';
     showQuestion();
 }
+
 function startQuiz() {
     currentQuestionIndex = 0;
     score = 0;
@@ -80,36 +81,37 @@ function startQuiz() {
 }
 
 function showQuestion() {
-resetState();
-let currentQuestion = questions[currentQuestionIndex];
-let questionNo = currentQuestionIndex + 1;
-questionElement.innerHTML = questionNo + ". " + currentQuestion.question;
+    resetState();
+    let currentQuestion = questions[currentQuestionIndex];
+    let questionNo = currentQuestionIndex + 1;
+    questionElement.innerHTML = questionNo + ". " + currentQuestion.question;
 
-const imgElement = document.getElementById("questionImage");
-imgElement.src = currentQuestion.image;
+    const imgElement = document.getElementById("questionImage");
+    imgElement.src = currentQuestion.image;
 
-if (currentQuestion.input) {
-    const inputField = document.createElement("input");
-    inputField.setAttribute("type", "text");
-    inputField.setAttribute("placeholder", "Type your answer...");
-    inputField.classList.add("btn");
-    answerButtons.appendChild(inputField);
+    if (currentQuestion.input) {
+        const inputField = document.createElement("input");
+        inputField.setAttribute("type", "text");
+        inputField.setAttribute("placeholder", "Type your answer...");
+        inputField.classList.add("btn");
+        answerButtons.appendChild(inputField);
     
-    nextButton.style.display = "block";
-    nextButton.addEventListener("click", handleNextButton);
-} else {
-    currentQuestion.answers.forEach(answer => {
+        nextButton.style.display = "block";
+        nextButton.addEventListener("click", handleNextButton);
+    } 
+    else {
+        currentQuestion.answers.forEach(answer => {
         const button = document.createElement("button");
         button.innerHTML = answer.text;
         button.classList.add("btn");
         answerButtons.appendChild(button);
 
-        if (answer.correct) {
-            button.dataset.correct = answer.correct;
-            button.dataset.correctAnswer = answer.correctAnswer; // Store the correct answer
-        }
-        button.addEventListener("click", selectAnswer);
-    });
+            if (answer.correct) {
+                button.dataset.correct = answer.correct;
+                button.dataset.correctAnswer = answer.correctAnswer; // Store the correct answer
+            }
+            button.addEventListener("click", selectAnswer);
+        });
     }
 }
 
@@ -127,40 +129,43 @@ function resetState() {
 
 
 function selectAnswer(e) {
-const selectedBtn = e.target;
-const isCorrect = selectedBtn.dataset.correct === "true";
+    const selectedBtn = e.target;
+    const isCorrect = selectedBtn.dataset.correct === "true";
 
-if (isCorrect) {
-    selectedBtn.classList.add("correct");
-    if (questions[currentQuestionIndex].input) {
-        const inputField = answerButtons.querySelector("input");
-        const userAnswer = inputField.value.trim().toLowerCase();
-        const correctAnswer = selectedBtn.dataset.correctAnswer.toLowerCase();
+    if (isCorrect) {
+        selectedBtn.classList.add("correct");
 
-        if (userAnswer === correctAnswer) {
-            score++;
+        if (questions[currentQuestionIndex].input) {
+            const inputField = answerButtons.querySelector("input");
+            const userAnswer = inputField.value.trim().toLowerCase();
+            const correctAnswer = selectedBtn.dataset.correctAnswer.toLowerCase();
+
+            if (userAnswer === correctAnswer) {
+                score++;
+            }
+        } 
+            else {
+                score++;
         }
-    } else {
-        score++;
     }
-} else {
-    selectedBtn.classList.add("Incorrect");
-}
+        else {
+        selectedBtn.classList.add("Incorrect");
+    }
 
-if (questions[currentQuestionIndex].input) {
-    const inputField = answerButtons.querySelector("input");
-    inputField.disabled = true;
-    nextButton.style.display = "block"; // Show the next button for input questions
-} else {
-    Array.from(answerButtons.children).forEach(button => {
-        if (button.dataset.correct === "true") {
-            button.classList.add("correct");
-        }
-        button.disabled = true;
-    });
-
+        if (questions[currentQuestionIndex].input) {
+            const inputField = answerButtons.querySelector("input");
+            inputField.disabled = true;
+            nextButton.style.display = "block"; // Show the next button for input questions
+    } 
+    else {
+        Array.from(answerButtons.children).forEach(button => {
+            if (button.dataset.correct === "true") {
+                button.classList.add("correct");
+            }
+            button.disabled = true;
+        });
     nextButton.style.display = "block"; // Show the next button for multiple-choice questions
-}
+    }
 }
 
 function showScore() {
